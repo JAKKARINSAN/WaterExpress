@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12372a">
+  <title>WaterExpress ยท เธฃเธฐเธเธเธงเธฒเธเนเธเธเน€เธชเนเธเธ—เธฒเธเธเธฑเธ”เธชเนเธ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark" aria-hidden="true">โก</div>
+    <div><p class="eyebrow">เธฃเธฐเธเธเธงเธฒเธเนเธเธเน€เธชเนเธเธ—เธฒเธเธเธฑเธ”เธชเนเธ</p><h1>WaterExpress</h1></div>
+    <div class="file-badge"><span></span>เธเนเธญเธกเธนเธฅ 15 เธชเธณเธเธฑเธเธเธฒเธ</div>
+  </header>
+
+  <main class="workspace">
+    <aside class="panel sidebar">
+      <section class="intro">
+        <p class="eyebrow">เธเธธเธ”เธซเธกเธฒเธขเธฃเธญเธเธเธตเน</p>
+        <h2>เน€เธฅเธทเธญเธเธชเธณเธเธฑเธเธเธฒเธเธ—เธตเนเธเธฐเนเธเธชเนเธ</h2>
+        <p>เธฃเธฐเธเธเธเธฐเธเธฑเธ”เธฅเธณเธ”เธฑเธเธเธธเธ”เนเธงเธฐเน€เธเธทเนเธญเธฅเธ”เธฃเธฐเธขเธฐเธ—เธฒเธเธฃเธงเธก</p>
+      </section>
+
+      <div class="toolbar">
+        <label class="search"><span>โ•</span><input id="search" type="search" placeholder="เธเนเธเธซเธฒเธเธทเนเธญ เธฃเธซเธฑเธช เธซเธฃเธทเธญเธญเธณเน€เธ เธญ"></label>
+        <div class="filters" role="group" aria-label="เธเธฃเธญเธเธเธฅเธธเนเธก">
+          <button class="chip active" data-group="ALL">เธ—เธฑเนเธเธซเธกเธ” <b>15</b></button>
+          <button class="chip" data-group="D05">D05 <b>9</b></button>
+          <button class="chip" data-group="D10">D10 <b>6</b></button>
+        </div>
+        <div class="select-actions"><button id="select-all">เน€เธฅเธทเธญเธเธ—เธฑเนเธเธซเธกเธ” 15 เธเธธเธ”</button><button id="select-visible">เน€เธฅเธทเธญเธเธ—เธตเนเนเธชเธ”เธ</button><button id="clear-all">เธฅเนเธฒเธ</button></div>
+      </div>
+
+      <div id="location-list" class="location-list"></div>
+
+      <section class="route-settings">
+        <label>เธเธธเธ”เน€เธฃเธดเนเธกเธ•เนเธ<select id="start-point"></select></label>
+        <label class="switch-row"><span><b>เธเธฅเธฑเธเธเธธเธ”เน€เธฃเธดเนเธกเธ•เนเธ</b><small>เน€เธฅเธทเธญเธเธเธฒเธเธฅเธฑเธเธ—เธตเนเธ”เธตเธ—เธตเนเธชเธธเธ” เนเธกเนเธขเนเธญเธเน€เธชเนเธเน€เธ”เธดเธก</small></span><input id="round-trip" type="checkbox" checked><i></i></label>
+        <button id="calculate" class="primary" disabled><span>เธเธฑเธ”เน€เธชเนเธเธ—เธฒเธเธ—เธตเนเธชเธฑเนเธเธ—เธตเนเธชเธธเธ”</span><span>โ’</span></button>
+      </section>
+    </aside>
+
+    <section class="map-shell">
+      <div id="map"></div>
+      <div class="map-note"><b>เนเธเธเธ—เธตเนเน€เธชเนเธเธ—เธฒเธ</b><span>เธฃเธฐเธขเธฐเธ—เธฒเธเธ–เธเธเธเนเธฒเธ OSRM ยท เนเธเธเธ—เธตเน ยฉ OpenStreetMap</span></div>
+      <div id="loading" class="loading" hidden><div></div><span>เธเธณเธฅเธฑเธเธเธณเธเธงเธ“เน€เธชเนเธเธ—เธฒเธโ€ฆ</span></div>
+    </section>
+
+    <aside class="panel result-panel">
+      <div class="result-head"><div><p class="eyebrow">เนเธเธเธเธฒเธฃเน€เธ”เธดเธเธ—เธฒเธ</p><h2>เธฅเธณเธ”เธฑเธเธเธฒเธฃเธเธฑเธ”เธชเนเธ</h2></div><button id="reset-route" title="เธฅเนเธฒเธเน€เธชเนเธเธ—เธฒเธ">โป</button></div>
+      <div id="empty-state" class="empty-state"><div class="empty-icon">โ</div><h3>เธขเธฑเธเนเธกเนเธกเธตเน€เธชเนเธเธ—เธฒเธ</h3><p>เน€เธฅเธทเธญเธเธญเธขเนเธฒเธเธเนเธญเธข 2 เธชเธณเธเธฑเธเธเธฒเธ<br>เนเธฅเนเธงเธเธ” โ€เธเธฑเธ”เน€เธชเนเธเธ—เธฒเธเธ—เธตเนเธชเธฑเนเธเธ—เธตเนเธชเธธเธ”โ€</p></div>
+      <div id="route-result" hidden>
+        <div class="stats"><div><small>เธฃเธฐเธขเธฐเธ—เธฒเธเธฃเธงเธก</small><strong id="total-distance">โ€“</strong></div><div><small>เธเธธเธ”เธเธฑเธ”เธชเนเธ</small><strong id="total-stops">โ€“</strong></div></div>
+        <div id="route-mode" class="route-mode"></div>
+        <ol id="route-list" class="route-list"></ol>
+        <div class="result-actions"><button id="open-google" class="primary">เน€เธเธดเธ”เธเธณเธ—เธฒเธเนเธ Google Maps โ—</button><button id="print-route">เธเธดเธกเธเนเนเธเน€เธชเนเธเธ—เธฒเธ</button></div>
+      </div>
+      <div class="data-warning"><span>!</span><p><b>เธ•เธฃเธงเธเธชเธญเธเธเธดเธเธฑเธ”เธเนเธญเธเน€เธ”เธดเธเธ—เธฒเธ</b>เธเธธเธ”เธ—เธตเนเธกเธตเธเธงเธฒเธกเธกเธฑเนเธเนเธ โ€เธ•เนเธณโ€ เน€เธเนเธเธเธดเธเธฑเธ”เธเธฑเนเธงเธเธฃเธฒเธงเธ•เธฒเธกเธเนเธญเธกเธนเธฅเนเธเนเธเธฅเน</p></div>
+    </aside>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+
